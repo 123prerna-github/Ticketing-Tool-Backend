@@ -91,6 +91,58 @@ const viewAllTickets = async (req, res) => {
 
 
 
+// Update Ticket API:
+const updateTicket = async (req, res) => {
+  try {
+      const { ticketId, title, description, priority, assignTo, assignBy, status, label} = req.body;
+     // const userRole = req.authUser.role;
+
+      // Check if ticketId is provided
+      if (!ticketId) {
+          return res.status(400).json({ success: 0, message: "Ticket ID is required" });
+      }
+
+      // Find the ticket by ID
+      const ticket = await ticketModel.findById(ticketId);
+      if (!ticket) {
+          return res.status(400).json({ success: 0, message: "Ticket not found" });
+      }
+      
+      //  // Check if the authenticated user has permission to update the ticket
+      //  if (userRole !== "admin" && req.authUser._id !== ticket.createdBy) {
+      //     return res.status(400).json({ success: 0, message: "Unauthorized access" });
+      // }
+
+      // Update ticket fields if provided in the request body
+      if (title)   { ticket.title = title; }
+      if (description) { ticket.description = description; }
+      if (priority) { ticket.priority = priority; }
+      if (assignTo) { ticket.assignTo = assignTo; }
+      if (assignBy) { ticket.assignBy = assignBy; } 
+      if (status) { ticket.status = status; }
+      if (label) { ticket.label = label; }
+
+      ticket.updatedAt = new Date();
+
+      // Save the updated ticket
+      const updatedTicket = await ticket.save();
+
+      res.status(200).json({
+          success: 1,
+          message: "Ticket updated successfully",
+          ticket: updatedTicket
+      });
+  } catch (error) {
+      res.status(400).json({ success: 0, message: error });
+  }
+};
+
+
+
+
+
+
+
 
 // Filter tickets based on assignedTo, date and priority:
 const filterTickets = async (req, res) => {
@@ -111,12 +163,12 @@ const filterTickets = async (req, res) => {
       // Parse and adjust the start and end date strings to Date objects
       if (startDate && endDate) {
           // Parse start date
-          const [startMonth, startDay, startYear] = startDate.split('-').map(Number);
+          const [startYear, startMonth, startDay] = startDate.split('-').map(Number);
           const parsedStartDate = new Date(startYear, startMonth - 1, startDay);
           parsedStartDate.setHours(0, 0, 0, 0); // Set time to start of the day
           
           // Parse end date
-          const [endMonth, endDay, endYear] = endDate.split('-').map(Number);
+          const [endYear, endMonth, endDay] = endDate.split('-').map(Number);
           const parsedEndDate = new Date(endYear, endMonth - 1, endDay);
           parsedEndDate.setHours(23, 59, 59, 999); // Set time to end of the day
           
@@ -146,7 +198,6 @@ const filterTickets = async (req, res) => {
 
 
 
-
-tickets={createTicket,viewAllTickets,filterTickets};
+tickets={createTicket,viewAllTickets,updateTicket ,filterTickets};
 module.exports=tickets;
 

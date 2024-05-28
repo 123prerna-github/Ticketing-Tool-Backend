@@ -49,6 +49,15 @@ router
   .get([Ticket.viewAllTickets]);
   
  
+ 
+/****************************** update-api *******************************/
+
+router
+.route("/updateticket")
+// .put([verifyToken,Ticket.updateTicket]);
+.put([Ticket.updateTicket]); 
+    
+
 
 /************************ filteringtickets-api **************************/
   router   
@@ -59,7 +68,7 @@ router
 
 
                              // Label API'S
-
+     
    /************************* creatingLabel-api ***************************/
 
       router
@@ -72,7 +81,7 @@ router
    router
    .route("/viewlabel")
    .get([Label.getAllLabels]);  
-
+   
 
 
 
