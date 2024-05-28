@@ -91,11 +91,12 @@ const viewAllTickets = async (req, res) => {
 
 
 
+
 // Update Ticket API:
 const updateTicket = async (req, res) => {
   try {
       const { ticketId, title, description, priority, assignTo, assignBy, status, label} = req.body;
-     // const userRole = req.authUser.role;
+     //const userRole = req.authUser.role;
 
       // Check if ticketId is provided
       if (!ticketId) {
