@@ -30,6 +30,10 @@ router
      .get([User.getAllUsers]); 
 
 
+/******************************* viewdetail-api **************************************/
+router 
+     .route("/view1")
+     .get([User.viewDetail]);  
 
 
                            // Ticket API's
@@ -62,7 +66,7 @@ router
 /************************ filteringtickets-api **************************/
   router   
       .route("/filterticket")
-      .get([Ticket.filterTickets]);
+      .post([Ticket.filterTickets]);
 
 
 

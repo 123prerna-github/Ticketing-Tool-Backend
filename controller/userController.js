@@ -92,6 +92,40 @@ const userModel = conUser.model("User", userSchema);
 };
 
 
+// Detail of particular user:
+const viewDetail = async (req, res) => {
+  try {
+
+      const userId = req.body.userId; // Assuming the userId is sent in the request body
+
+      // Retrieve the user details by userId
+      const user = await userModel.findById(userId);
+
+      // Check if the user exists
+      if (!user) {
+          return res.status(404).json({ success: 0, message: "User not found" });
+      }
+
+      // Return only firstName and lastName from the user object
+      const userData = {
+          firstName: user.firstName,
+          lastName: user.lastName
+      };
+
+      // Return user details
+      res.status(200).json({
+          success: 1,
+          message: "User detail retrieved successfully",
+          data: userData
+      });
+  } catch (error) {
+      res.status(400).json({
+          success: 0,
+          message: "An error occurred while retrieving user detail"
+      });
+  }
+};
+
 
 
 // User Login API:
@@ -156,6 +190,6 @@ const login = async (req, res) => {
 
 
 
-user={getAllUsers,login,userRegister};
+user={getAllUsers,login,userRegister, viewDetail };
 module.exports=user;
 

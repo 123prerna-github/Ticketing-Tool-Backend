@@ -95,7 +95,7 @@ const viewAllTickets = async (req, res) => {
 // Update Ticket API:
 const updateTicket = async (req, res) => {
   try {
-      const { ticketId, title, description, priority, assignTo, assignBy, status, label} = req.body;
+      const { ticketId, title, description, priority, assignTo, status, label} = req.body;
      //const userRole = req.authUser.role;
 
       // Check if ticketId is provided
@@ -119,7 +119,7 @@ const updateTicket = async (req, res) => {
       if (description) { ticket.description = description; }
       if (priority) { ticket.priority = priority; }
       if (assignTo) { ticket.assignTo = assignTo; }
-      if (assignBy) { ticket.assignBy = assignBy; } 
+     // if (assignBy) { ticket.assignBy = assignBy; } 
       if (status) { ticket.status = status; }
       if (label) { ticket.label = label; }
 
@@ -192,8 +192,6 @@ const filterTickets = async (req, res) => {
       res.status(400).json({ success: 0, message: 'An error occurred while filtering tickets' });
   }
 };
-
-
 
 
 
