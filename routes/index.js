@@ -33,7 +33,7 @@ router
 /******************************* viewdetail-api **************************************/
 router 
      .route("/view1")
-     .get([User.viewDetail]);  
+     .get([verifyToken,User.viewDetail]);  
 
 
                            // Ticket API's

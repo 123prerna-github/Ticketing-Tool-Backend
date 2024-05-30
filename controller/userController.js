@@ -96,7 +96,7 @@ const userModel = conUser.model("User", userSchema);
 const viewDetail = async (req, res) => {
   try {
 
-      const userId = req.body.userId; // Assuming the userId is sent in the request body
+      const userId = req.authUser._id; // Assuming the userId is sent in the request body
 
       // Retrieve the user details by userId
       const user = await userModel.findById(userId);
@@ -160,7 +160,6 @@ const login = async (req, res) => {
     }
 
     const result = await userModel.findOne({ email: username });
-    console.log(result);
     if (!result) {
       res
         .status(400)
