@@ -96,8 +96,7 @@ const viewAllTickets = async (req, res) => {
 const updateTicket = async (req, res) => {
   try {
       const { ticketId, title, description, priority, assignTo, status, label} = req.body;
-     //const userRole = req.authUser.role;
-
+     
       // Check if ticketId is provided
       if (!ticketId) {
           return res.status(400).json({ success: 0, message: "Ticket ID is required" });
@@ -108,18 +107,12 @@ const updateTicket = async (req, res) => {
       if (!ticket) {
           return res.status(400).json({ success: 0, message: "Ticket not found" });
       }
-      
-      //  // Check if the authenticated user has permission to update the ticket
-      //  if (userRole !== "admin" && req.authUser._id !== ticket.createdBy) {
-      //     return res.status(400).json({ success: 0, message: "Unauthorized access" });
-      // }
 
       // Update ticket fields if provided in the request body
       if (title)   { ticket.title = title; }
       if (description) { ticket.description = description; }
       if (priority) { ticket.priority = priority; }
       if (assignTo) { ticket.assignTo = assignTo; }
-     // if (assignBy) { ticket.assignBy = assignBy; } 
       if (status) { ticket.status = status; }
       if (label) { ticket.label = label; }
 
@@ -197,6 +190,71 @@ const filterTickets = async (req, res) => {
 
 
 
-tickets={createTicket,viewAllTickets,updateTicket ,filterTickets};
+
+// Create Comment on Tickets:
+const createComment = async (req, res) => {
+    try {
+        const { ticketId, comment } = req.body;
+    
+        // Check if the ticket exists
+        const ticket = await ticketModel.findById(ticketId);
+        if (!ticket) {
+          return res.status(400).json({ success: 0, message: "Ticket not found" });
+        }
+
+       // Add comment to the ticket
+          ticket.comments.push({ ticketId, comment, createdAt1: new Date() });
+        
+       // Save the updated ticket with the new comment
+         const updatedTicket = await ticket.save();
+
+        // Return success response with the saved comment
+        res.status(200).json({
+            success: 1,
+            message: "Comment added successfully",
+            data: updatedTicket
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: 0,
+            message:error
+        });
+    }
+};
+
+
+
+
+// View Ticket Comment: 
+const viewComment = async (req, res) => {
+    try {
+        const { ticketId } = req.body;
+
+        // Find the ticket in the database by its ID
+            const ticket = await ticketModel.findById(ticketId);
+            if (!ticket) {
+                res.status(404).json({ success: 0, message: "Ticket not found" });
+                return;
+            }
+    
+        // Return the ticket details
+        res.status(200).json({
+            success: 1,
+            message: "Ticket Comment retrieved successfully",
+            data: ticket.comments
+        });
+    } catch (error) {
+        // If an error occurs, return a 500 Internal Server Error
+        res.status(500).json({ success: 0, message: "Internal Server Error" });
+    }
+};
+ 
+  
+
+
+
+
+
+tickets={createTicket,viewAllTickets,updateTicket ,filterTickets,createComment,viewComment};
 module.exports=tickets;
 

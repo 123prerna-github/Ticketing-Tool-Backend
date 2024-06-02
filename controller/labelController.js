@@ -50,11 +50,6 @@ const updateLabel = async (req, res) => {
          return;
         }
 
-        //  // Check if the authenticated user has permission to update the label
-        //  if (req.authUser.role!== "admin" && req.authUser._id !== label.createdBy) {
-        //     return res.status(400).json({ success: 0, message: "Unauthorized access: Only Admins can Update" });
-        // }
-
     if(name) {label.name = name;}
     //if(description) {label.description = description;}
     updatedBy = req.authUser._id;
@@ -81,14 +76,6 @@ const deleteLabel = async (req, res) => {
             return res.status(400).json({ success: 0, message: "label not found" });
         }
         
-    //       // Check if the authenticated user is authorized to delete the label
-    // if (
-    //     req.authUser.role !== 'admin' &&
-    //     req.authUser._id !== label.createdBy
-    //   ) {
-    //      res.status(403).json({ success: 0, message: 'Unauthorized to delete the Label' });
-    //      return;
-    //   }
          // Delete the label
         await labelModel.findByIdAndDelete(label_id);
 

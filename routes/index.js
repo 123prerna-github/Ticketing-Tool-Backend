@@ -70,6 +70,17 @@ router
 
 
 
+/****************************** createComment-api ************************/
+router
+.route("/createcomment")
+.post([Ticket.createComment]);    
+
+
+
+/****************************** viewComment-api ************************/
+router
+.route("/viewcomment")
+.post([Ticket.viewComment]);    
 
                              // Label API'S
      
